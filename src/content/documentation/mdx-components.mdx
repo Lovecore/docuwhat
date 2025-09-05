@@ -33,15 +33,16 @@ Highlight important information with styled callout boxes:
 
 **Usage:**
 
-<CodeBlock language="mdx">
-<Callout type="info" title="Optional Title">
-  Your callout content here. Supports **markdown** formatting.
-</Callout>
+```text
+Callout Component Properties:
+  type: "info" | "warning" | "error" | "success"
+  title: (optional) Title text for the callout
+  children: Content inside the callout (supports markdown)
 
-<Callout type="warning">
-  Title is optional. This callout has no title.
-</Callout>
-</CodeBlock>
+Example structure:
+  Callout with type="info" and title="Optional Title"
+    → Your content goes here
+```
 
 ### 2. VideoPlayer Component
 
@@ -53,13 +54,12 @@ Embed videos directly in your documentation:
 
 **Usage:**
 
-<CodeBlock language="mdx">
-<VideoPlayer 
-  src="/videos/tutorial.mp4" 
-  title="Getting Started Tutorial"
-  poster="/videos/tutorial-thumb.jpg"
-/>
-</CodeBlock>
+```text
+VideoPlayer Component Properties:
+  src: "/videos/tutorial.mp4" (required)
+  title: "Getting Started Tutorial" (optional)
+  poster: "/videos/tutorial-thumb.jpg" (optional)
+```
 
 **Props:**
 - `src` (required): Path to video file
@@ -85,19 +85,10 @@ greetUser("Developer");
 
 **Usage:**
 
-<CodeBlock language="mdx">
-```javascript
-// Your code here
-const example = "code";
-```
-
-Or use the component directly:
-
-<CodeBlock language="python">
-def hello():
-    print("Hello World")
-</CodeBlock>
-</CodeBlock>
+Use triple backticks with a language identifier for syntax highlighting:
+- `javascript` for JS code
+- `python` for Python code
+- `bash` for shell commands
 
 **Features:**
 - Syntax highlighting for 100+ languages
@@ -138,8 +129,9 @@ Visualize directory structures:
 
 **Usage:**
 
-<CodeBlock language="mdx">
-<FileTree data={[
+```javascript
+// FileTree data structure
+const treeData = [
   {
     name: "folder-name/",
     type: "folder",
@@ -154,8 +146,9 @@ Visualize directory structures:
       }
     ]
   }
-]} />
-</CodeBlock>
+];
+// Pass this data to the FileTree component
+```
 
 **Features:**
 - Collapsible folders
@@ -167,33 +160,16 @@ Visualize directory structures:
 
 You can combine components for rich documentation:
 
-<CodeBlock language="mdx">
+```text
 ## Installation Guide
 
-<Callout type="info">
-  Make sure you have Node.js 18+ installed before proceeding.
-</Callout>
-
-Follow these steps to install:
-
-<FileTree data={[
-  {
-    name: "your-project/",
-    type: "folder",
-    children: [
-      { name: "package.json", type: "file" },
-      { name: "src/", type: "folder" }
-    ]
-  }
-]} />
-
-```bash
-npm install docuwhat
-npm run dev
+Use Callout component for prerequisites
+Use FileTree component to show project structure
+Include bash code blocks for commands
+Add VideoPlayer for visual tutorials
 ```
 
-<VideoPlayer src="/videos/installation.mp4" title="Installation Walkthrough" />
-</CodeBlock>
+Combine these components to create rich, interactive documentation.
 
 ## Standard Markdown Elements
 
@@ -264,7 +240,7 @@ Choose the right component for your content:
 
 Want to add your own components? Create them in `src/components/mdx/`:
 
-<CodeBlock language="jsx">
+```javascript
 // src/components/mdx/custom-component.tsx
 export function CustomComponent({ children, ...props }) {
   return (
@@ -273,26 +249,27 @@ export function CustomComponent({ children, ...props }) {
     </div>
   );
 }
-</CodeBlock>
+```
 
 Then add to `src/components/mdx/index.tsx`:
 
-<CodeBlock language="jsx">
+```javascript
 import { CustomComponent } from "./custom-component";
 
 export const MDXComponents = {
   // ... existing components
   CustomComponent,
 };
-</CodeBlock>
+```
 
 Now use in any MDX file:
 
-<CodeBlock language="mdx">
-<CustomComponent>
-  Your custom content here!
-</CustomComponent>
-</CodeBlock>
+```text
+CustomComponent usage:
+  - Import the component in your MDX
+  - Pass children and props as needed
+  - Component will render with custom styles
+```
 
 ## Next Steps
 

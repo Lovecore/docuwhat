@@ -13,20 +13,20 @@ React is a JavaScript library for building user interfaces, particularly single-
 
 React applications are built using components - reusable pieces of UI that manage their own state.
 
-<CodeBlock language="jsx">
+```javascript
 function Welcome(props) {
   return <h1>Hello, {props.name}!</h1>;
 }
 
 // Usage
 <Welcome name="DocuWhat" />
-</CodeBlock>
+```
 
 ### State Management
 
 State is data that changes over time in your application:
 
-<CodeBlock language="jsx">
+```javascript
 import { useState } from 'react';
 
 function Counter() {
@@ -41,7 +41,7 @@ function Counter() {
     </div>
   );
 }
-</CodeBlock>
+```
 
 ## Hooks
 
@@ -73,18 +73,18 @@ Understanding component lifecycle helps you optimize performance:
 
 Use `React.memo` to prevent unnecessary re-renders:
 
-<CodeBlock language="jsx">
+```javascript
 const ExpensiveComponent = React.memo(({ data }) => {
   // Component only re-renders if 'data' changes
   return <div>{/* Expensive rendering */}</div>;
 });
-</CodeBlock>
+```
 
 ### Code Splitting
 
 Implement lazy loading for better performance:
 
-<CodeBlock language="jsx">
+```javascript
 import { lazy, Suspense } from 'react';
 
 const HeavyComponent = lazy(() => import('./HeavyComponent'));
@@ -96,7 +96,7 @@ function App() {
     </Suspense>
   );
 }
-</CodeBlock>
+```
 
 ## Resources
 

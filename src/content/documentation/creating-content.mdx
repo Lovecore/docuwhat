@@ -29,17 +29,13 @@ This is standard **Markdown** content.
 ### 2. MDX Files (`.mdx`)
 Markdown with JSX components for rich content:
 
-<CodeBlock language="mdx">
+```yaml
 ---
 title: Rich Page
 ---
+```
 
-# Rich Page
-
-Standard markdown plus components:
-
-<VideoPlayer src="/videos/demo.mp4" />
-</CodeBlock>
+Then in your MDX content, you can use components like `VideoPlayer` with the appropriate props.
 
 <Callout type="info" title="Recommendation">
   Use `.mdx` files for most content - they support everything `.md` files do, plus components.
@@ -109,7 +105,7 @@ Use triple backticks with language specification:
 function hello() {
   console.log("Hello, DocuWhat!");
 }
-```
+</CodeBlock>
 
 ```python
 def hello():
@@ -150,37 +146,20 @@ touch src/content/guides/my-guide.mdx
 
 ### Step 3: Add Content
 
-<CodeBlock language="mdx">
+```yaml
 ---
 title: My First Guide
 description: Learning to use DocuWhat
 tags: ["guide", "tutorial"]
 order: 1
 ---
-
-# My First Guide
-
-Welcome to my guide! This is where your content begins.
-
-## Introduction
-
-Start with an introduction to set context.
-
-<Callout type="info">
-  Use callouts to highlight important information.
-</Callout>
-
-## Main Content
-
-Add your main content here with:
-- Clear sections
-- Helpful examples
-- Visual aids when needed
-
-## Conclusion
-
-Wrap up with next steps or summary.
 </CodeBlock>
+
+Then write your content using:
+- Markdown headings and formatting
+- MDX components like Callout for important information
+- Lists and structured content
+- Clear sections and conclusions
 
 ### Step 4: View Your Page
 

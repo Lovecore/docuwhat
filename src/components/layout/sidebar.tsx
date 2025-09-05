@@ -61,17 +61,33 @@ export function Sidebar() {
               />
             </Button>
           )}
-          <Link
-            href={item.href}
-            className={cn(
-              "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent flex-1",
-              isActive && "bg-accent font-medium",
-              !hasChildren && depth === 0 && "ml-7"
-            )}
-          >
-            <FileText className="h-4 w-4" />
-            {item.title}
-          </Link>
+          {hasChildren ? (
+            // For categories with children, clicking expands/collapses
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-3 py-2 text-sm flex-1 cursor-pointer font-medium transition-all hover:bg-accent",
+                depth === 0 && "text-foreground",
+                depth > 0 && "text-muted-foreground"
+              )}
+            >
+              <FileText className="h-4 w-4" />
+              {item.title}
+            </button>
+          ) : (
+            // For leaf items, keep them as links
+            <Link
+              href={item.href}
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent flex-1",
+                isActive && "bg-accent font-medium",
+                !hasChildren && depth === 0 && "ml-7"
+              )}
+            >
+              <FileText className="h-4 w-4" />
+              {item.title}
+            </Link>
+          )}
         </div>
         {hasChildren && isExpanded && (
           <div className="mt-1">

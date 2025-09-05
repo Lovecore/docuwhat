@@ -124,7 +124,7 @@ Documentation (Level 0)
 
 ### Page Structure Template
 
-<CodeBlock language="mdx">
+```markdown
 ---
 title: Clear, Descriptive Title
 description: One-line summary for search results
@@ -150,9 +150,9 @@ Content organized in logical sections.
 
 More content with examples.
 
-<Callout type="info">
+&lt;Callout type="info"&gt;
   Important notes or tips.
-</Callout>
+&lt;/Callout&gt;
 
 ## Examples
 
@@ -167,7 +167,7 @@ Common issues and solutions.
 - [Related Page 1](/path/to/page1)
 - [Related Page 2](/path/to/page2)
 - [External Resource](https://example.com)
-</CodeBlock>
+```
 
 ## Naming Conventions
 
@@ -287,11 +287,12 @@ content/
 
 Mark deprecated content clearly:
 
-<CodeBlock language="mdx">
-<Callout type="warning" title="Deprecated">
-  This feature is deprecated. Use [new feature](/new-feature) instead.
-</Callout>
-</CodeBlock>
+```text
+Use a Callout component with:
+  type: "warning"
+  title: "Deprecated"
+  content: Link to the new feature replacement
+```
 
 ## Scaling Tips
 

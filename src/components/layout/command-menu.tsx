@@ -25,17 +25,32 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
   const [content, setContent] = useState<ContentItem[]>([]);
   const [searchResults, setSearchResults] = useState<ContentItem[]>([]);
 
+  // Fetch content once when component mounts
   useEffect(() => {
-    // Fetch all content for searching
     fetch("/api/search")
       .then((res) => res.json())
-      .then((data) => setContent(data))
-      .catch(() => setContent([]));
+      .then((data) => {
+        console.log("Content loaded:", data.length, "items");
+        setContent(data);
+      })
+      .catch((err) => {
+        console.error("Failed to load content:", err);
+        setContent([]);
+      });
   }, []);
 
+  // Update search results when search or content changes
   useEffect(() => {
+    console.log("Search effect - search:", search, "content length:", content.length);
+    
     if (!search) {
+      // Show first 5 items when no search
       setSearchResults(content.slice(0, 5));
+      return;
+    }
+
+    if (content.length === 0) {
+      setSearchResults([]);
       return;
     }
 
@@ -50,6 +65,7 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
     });
 
     const results = fuse.search(search);
+    console.log("Fuse search results for '" + search + "':", results.length);
     setSearchResults(results.slice(0, 10).map((r) => r.item));
   }, [search, content]);
 
@@ -67,13 +83,17 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         onValueChange={setSearch}
       />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        {console.log("Rendering - searchResults:", searchResults, "search:", search)}
+        {searchResults.length === 0 && search && (
+          <CommandEmpty>No results found.</CommandEmpty>
+        )}
         
-        {searchResults.length > 0 && (
-          <CommandGroup heading="Pages">
+        {searchResults.length > 0 ? (
+          <CommandGroup heading="Search Results">
             {searchResults.map((item) => (
               <CommandItem
                 key={item.slug.join("/")}
+                value={item.meta.title}
                 onSelect={() => handleSelect(item)}
               >
                 <FileText className="mr-2 h-4 w-4" />
@@ -101,6 +121,12 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
               </CommandItem>
             ))}
           </CommandGroup>
+        ) : (
+          !search && (
+            <CommandGroup heading="Recent Documents">
+              <CommandEmpty>Loading...</CommandEmpty>
+            </CommandGroup>
+          )
         )}
       </CommandList>
     </CommandDialog>

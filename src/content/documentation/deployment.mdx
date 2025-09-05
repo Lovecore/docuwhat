@@ -283,7 +283,7 @@ Value: [Platform domain]
 
 Use Next.js Image component:
 
-<CodeBlock language="jsx">
+```javascript
 import Image from 'next/image';
 
 <Image
@@ -293,15 +293,16 @@ import Image from 'next/image';
   height={400}
   loading="lazy"
 />
-</CodeBlock>
+```
 
 ### Video Optimization
 
 For large videos, use external CDN:
 
-<CodeBlock language="mdx">
-<VideoPlayer src="https://cdn.example.com/video.mp4" />
-</CodeBlock>
+```text
+VideoPlayer component with CDN URL:
+  src: "https://cdn.example.com/video.mp4"
+```
 
 ### Caching Strategy
 
@@ -331,7 +332,7 @@ module.exports = {
 
 Add analytics to track usage:
 
-<CodeBlock language="jsx">
+```javascript
 // src/app/layout.tsx
 import { Analytics } from '@vercel/analytics/react';
 
@@ -343,7 +344,7 @@ export default function Layout({ children }) {
     </>
   );
 }
-</CodeBlock>
+```
 
 ### Error Tracking
 

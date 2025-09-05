@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Highlight.js styles for code syntax highlighting */
+@import 'highlight.js/styles/github-dark.css';
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -58,10 +61,21 @@
   }
 }
 
+/* Code block styling */
 .prose pre {
-  @apply bg-muted p-4 rounded-lg overflow-x-auto;
+  @apply bg-gray-900 dark:bg-gray-950 p-4 rounded-lg overflow-x-auto my-4;
 }
 
-.prose code {
-  @apply bg-muted px-1 py-0.5 rounded text-sm;
+.prose pre code {
+  @apply bg-transparent text-gray-100 block;
+}
+
+/* Inline code styling */
+.prose code:not(pre code) {
+  @apply bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm;
+}
+
+/* Override highlight.js background */
+.prose pre code.hljs {
+  @apply bg-transparent;
 }

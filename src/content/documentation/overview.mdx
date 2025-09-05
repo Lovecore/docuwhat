@@ -62,16 +62,16 @@ updated: "2024-01-15"
 
 MDX lets you use React components in Markdown:
 
-<CodeBlock language="mdx">
+```markdown
 # Regular Markdown
 
 You can write **bold**, *italic*, and `code`.
 
-<Callout type="info">
+&lt;Callout type="info"&gt;
   But also use React components!
-</Callout>
+&lt;/Callout&gt;
 
-<VideoPlayer src="/videos/tutorial.mp4" />
+&lt;VideoPlayer src="/videos/tutorial.mp4" /&gt;
 </CodeBlock>
 
 ## Core Features
@@ -99,7 +99,7 @@ Long pages get an automatic table of contents on the right side (desktop only).
 
 Create a new file `src/content/my-guide.mdx`:
 
-<CodeBlock language="mdx">
+```markdown
 ---
 title: My Awesome Guide
 description: This guide explains awesome things
@@ -114,14 +114,14 @@ This is my content. It supports:
 - **Bold text**
 - `Code snippets`
 
-<Callout type="success">
+&lt;Callout type="success"&gt;
   And special components!
-</Callout>
+&lt;/Callout&gt;
 
 ## Section 2
 
 More content here...
-</CodeBlock>
+```
 
 Save the file, and visit `/my-guide` - your page is live!
 

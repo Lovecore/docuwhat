@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { getContentBySlug, getAllContent } from "@/lib/content";
+import { parseMarkdown } from "@/lib/markdown";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { TableOfContents } from "@/components/content/table-of-contents";
-import { MDXComponents } from "@/components/mdx";
 import { HomePage } from "@/components/home-page";
 
 interface PageProps {
@@ -20,7 +19,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: PageProps) {
+export default async function Page({ params }: PageProps) {
   // Home page
   if (!params.slug || params.slug.length === 0) {
     return <HomePage />;
@@ -31,6 +30,9 @@ export default function Page({ params }: PageProps) {
   if (!content) {
     notFound();
   }
+
+  // Parse markdown to HTML
+  const htmlContent = parseMarkdown(content.content);
 
   return (
     <div className="flex min-h-screen">
@@ -60,12 +62,10 @@ export default function Page({ params }: PageProps) {
             )}
 
             <div className="flex gap-8">
-              <div className="flex-1">
-                <MDXRemote 
-                  source={content.content} 
-                  components={MDXComponents}
-                />
-              </div>
+              <div 
+                className="flex-1 prose prose-neutral dark:prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: htmlContent }}
+              />
               
               <aside className="hidden xl:block w-64">
                 <div className="sticky top-24">
