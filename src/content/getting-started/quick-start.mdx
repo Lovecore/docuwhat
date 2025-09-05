@@ -1,0 +1,102 @@
+---
+title: Quick Start Guide
+description: Get up and running with DocuWhat in minutes
+tags: ["getting-started", "tutorial"]
+order: 2
+---
+
+This guide will help you get DocuWhat running on your local machine in just a few minutes.
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v18 or higher)
+- **npm** or **yarn** package manager
+- A code editor (we recommend VS Code)
+
+## Installation Steps
+
+### 1. Clone the Repository
+
+<CodeBlock language="bash">
+git clone https://github.com/yourusername/docuwhat.git
+cd docuwhat
+</CodeBlock>
+
+### 2. Install Dependencies
+
+<CodeBlock language="bash">
+npm install
+# or
+yarn install
+</CodeBlock>
+
+### 3. Start the Development Server
+
+<CodeBlock language="bash">
+npm run dev
+# or
+yarn dev
+</CodeBlock>
+
+Your documentation site will be available at `http://localhost:3000`.
+
+## Project Structure
+
+Understanding the project structure helps you organize your content effectively:
+
+<FileTree data={[
+  {
+    name: "src/",
+    type: "folder",
+    children: [
+      {
+        name: "content/",
+        type: "folder",
+        children: [
+          { name: "getting-started/", type: "folder" },
+          { name: "frameworks/", type: "folder" },
+          { name: "resources/", type: "folder" }
+        ]
+      },
+      {
+        name: "components/",
+        type: "folder",
+        children: [
+          { name: "ui/", type: "folder" },
+          { name: "mdx/", type: "folder" },
+          { name: "layout/", type: "folder" }
+        ]
+      },
+      {
+        name: "app/",
+        type: "folder",
+        children: [
+          { name: "[[...slug]]/", type: "folder" },
+          { name: "api/", type: "folder" }
+        ]
+      }
+    ]
+  },
+  { name: "package.json", type: "file" },
+  { name: "next.config.mjs", type: "file" }
+]} />
+
+## Creating Your First Page
+
+1. Create a new MDX file in the `src/content` directory
+2. Add frontmatter metadata
+3. Write your content using Markdown and MDX components
+
+<Callout type="success" title="Pro Tip">
+  Use the existing content as templates for creating new documentation pages.
+</Callout>
+
+## Next Steps
+
+Now that you have DocuWhat running:
+
+- Learn about [MDX Components](/getting-started/mdx-components)
+- Explore [Content Organization](/getting-started/content-organization)
+- Check out the [Frameworks](/frameworks) section for examples

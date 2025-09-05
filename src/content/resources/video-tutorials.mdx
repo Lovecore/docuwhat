@@ -1,0 +1,103 @@
+---
+title: Video Tutorials
+description: Learn through video demonstrations and tutorials
+tags: ["video", "tutorials", "learning"]
+video: "/videos/intro.mp4"
+order: 1
+---
+
+Visual learning can be incredibly effective. This section contains video tutorials and demonstrations to help you understand concepts better.
+
+## Introduction Video
+
+<VideoPlayer 
+  src="/videos/intro.mp4" 
+  title="Welcome to DocuWhat"
+  poster="/videos/intro-poster.jpg"
+/>
+
+## Tutorial Series
+
+### Getting Started Series
+
+Learn the basics of DocuWhat through this comprehensive video series:
+
+<Callout type="info">
+  Place your video files in the `/public/videos` directory to make them accessible.
+</Callout>
+
+1. **Installation and Setup** (10 minutes)
+   - System requirements
+   - Installation process
+   - Initial configuration
+
+2. **Creating Your First Page** (15 minutes)
+   - MDX basics
+   - Using frontmatter
+   - Adding components
+
+3. **Advanced Features** (20 minutes)
+   - Custom components
+   - Search configuration
+   - Theme customization
+
+## Code Walkthroughs
+
+### Component Development
+
+Learn how to create custom MDX components:
+
+<CodeBlock language="jsx">
+// Custom video component with chapters
+export function VideoWithChapters({ src, chapters }) {
+  return (
+    <div className="video-container">
+      <video src={src} controls />
+      <div className="chapters">
+        {chapters.map((chapter, index) => (
+          <button key={index} onClick={() => seekTo(chapter.time)}>
+            {chapter.title}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+</CodeBlock>
+
+## Best Practices for Video Content
+
+### Video Format Guidelines
+
+- **Resolution**: 1920x1080 (Full HD) recommended
+- **Format**: MP4 with H.264 codec for best compatibility
+- **File Size**: Optimize for web delivery (< 100MB per video)
+- **Audio**: Clear narration with minimal background noise
+
+### Embedding Videos
+
+You can embed videos in multiple ways:
+
+1. **Local Videos**: Store in `/public/videos`
+2. **External Videos**: Link to YouTube, Vimeo, etc.
+3. **Streaming**: Use CDN for better performance
+
+<Callout type="warning" title="Performance Tip">
+  For large video files, consider using a CDN or video hosting service to improve loading times.
+</Callout>
+
+## Interactive Examples
+
+### Live Coding Sessions
+
+Join our live coding sessions where we build features in real-time:
+
+- Every Tuesday: React Components
+- Every Thursday: Next.js Features
+- Every Friday: Community Q&A
+
+## Additional Resources
+
+- [Written Tutorials](/getting-started/quick-start)
+- [API Documentation](/frameworks/react)
+- [Community Forum](https://community.docuwhat.com)

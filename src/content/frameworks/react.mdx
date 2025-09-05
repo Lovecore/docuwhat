@@ -1,0 +1,105 @@
+---
+title: React Framework
+description: Learn React fundamentals and best practices
+tags: ["react", "javascript", "frontend"]
+order: 1
+---
+
+React is a JavaScript library for building user interfaces, particularly single-page applications where data changes over time.
+
+## Core Concepts
+
+### Components
+
+React applications are built using components - reusable pieces of UI that manage their own state.
+
+<CodeBlock language="jsx">
+function Welcome(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+
+// Usage
+<Welcome name="DocuWhat" />
+</CodeBlock>
+
+### State Management
+
+State is data that changes over time in your application:
+
+<CodeBlock language="jsx">
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+</CodeBlock>
+
+## Hooks
+
+React Hooks allow you to use state and other React features in functional components.
+
+### Common Hooks
+
+- **useState**: Manage component state
+- **useEffect**: Handle side effects
+- **useContext**: Access context values
+- **useMemo**: Memoize expensive calculations
+- **useCallback**: Memoize callback functions
+
+<Callout type="info" title="Best Practice">
+  Always call Hooks at the top level of your React function. Don't call Hooks inside loops, conditions, or nested functions.
+</Callout>
+
+## Component Lifecycle
+
+Understanding component lifecycle helps you optimize performance:
+
+1. **Mounting**: Component is created and inserted into DOM
+2. **Updating**: Component re-renders due to state or prop changes
+3. **Unmounting**: Component is removed from DOM
+
+## Performance Optimization
+
+### Memoization
+
+Use `React.memo` to prevent unnecessary re-renders:
+
+<CodeBlock language="jsx">
+const ExpensiveComponent = React.memo(({ data }) => {
+  // Component only re-renders if 'data' changes
+  return <div>{/* Expensive rendering */}</div>;
+});
+</CodeBlock>
+
+### Code Splitting
+
+Implement lazy loading for better performance:
+
+<CodeBlock language="jsx">
+import { lazy, Suspense } from 'react';
+
+const HeavyComponent = lazy(() => import('./HeavyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+</CodeBlock>
+
+## Resources
+
+- [Official React Documentation](https://react.dev)
+- [React Patterns](/frameworks/react-patterns)
+- [Next.js Framework](/frameworks/nextjs)

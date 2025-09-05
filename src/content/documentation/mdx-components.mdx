@@ -1,0 +1,301 @@
+---
+title: MDX Components Guide
+description: All available components for creating rich documentation
+tags: ["mdx", "components", "reference"]
+order: 3
+---
+
+# MDX Components Guide
+
+DocuWhat provides powerful components to enhance your documentation beyond standard Markdown.
+
+## Available Components
+
+### 1. Callout Component
+
+Highlight important information with styled callout boxes:
+
+<Callout type="info" title="Information">
+  This is an info callout. Use it for helpful tips and additional context.
+</Callout>
+
+<Callout type="success" title="Success">
+  This is a success callout. Perfect for positive confirmations and achievements.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  This is a warning callout. Use it to alert users to important considerations.
+</Callout>
+
+<Callout type="error" title="Error">
+  This is an error callout. Highlight problems or critical issues.
+</Callout>
+
+**Usage:**
+
+<CodeBlock language="mdx">
+<Callout type="info" title="Optional Title">
+  Your callout content here. Supports **markdown** formatting.
+</Callout>
+
+<Callout type="warning">
+  Title is optional. This callout has no title.
+</Callout>
+</CodeBlock>
+
+### 2. VideoPlayer Component
+
+Embed videos directly in your documentation:
+
+<Callout type="info">
+  Place video files in `/public/videos/` directory for local hosting.
+</Callout>
+
+**Usage:**
+
+<CodeBlock language="mdx">
+<VideoPlayer 
+  src="/videos/tutorial.mp4" 
+  title="Getting Started Tutorial"
+  poster="/videos/tutorial-thumb.jpg"
+/>
+</CodeBlock>
+
+**Props:**
+- `src` (required): Path to video file
+- `title` (optional): Display title above video
+- `poster` (optional): Thumbnail image before play
+
+### 3. CodeBlock Component
+
+Enhanced code blocks with syntax highlighting and copy button:
+
+<CodeBlock language="javascript">
+// This code block has syntax highlighting
+function greetUser(name) {
+  console.log(`Hello, ${name}!`);
+  return {
+    message: "Welcome to DocuWhat",
+    timestamp: new Date()
+  };
+}
+
+greetUser("Developer");
+</CodeBlock>
+
+**Usage:**
+
+<CodeBlock language="mdx">
+```javascript
+// Your code here
+const example = "code";
+```
+
+Or use the component directly:
+
+<CodeBlock language="python">
+def hello():
+    print("Hello World")
+</CodeBlock>
+</CodeBlock>
+
+**Features:**
+- Syntax highlighting for 100+ languages
+- Copy-to-clipboard button
+- Language indicator
+- Line numbers (coming soon)
+
+### 4. FileTree Component
+
+Visualize directory structures:
+
+<FileTree data={[
+  {
+    name: "project/",
+    type: "folder",
+    children: [
+      {
+        name: "src/",
+        type: "folder",
+        children: [
+          { name: "index.js", type: "file" },
+          { name: "app.js", type: "file" },
+          {
+            name: "components/",
+            type: "folder",
+            children: [
+              { name: "Header.jsx", type: "file" },
+              { name: "Footer.jsx", type: "file" }
+            ]
+          }
+        ]
+      },
+      { name: "package.json", type: "file" },
+      { name: "README.md", type: "file" }
+    ]
+  }
+]} />
+
+**Usage:**
+
+<CodeBlock language="mdx">
+<FileTree data={[
+  {
+    name: "folder-name/",
+    type: "folder",
+    children: [
+      { name: "file.txt", type: "file" },
+      {
+        name: "subfolder/",
+        type: "folder",
+        children: [
+          { name: "nested.js", type: "file" }
+        ]
+      }
+    ]
+  }
+]} />
+</CodeBlock>
+
+**Features:**
+- Collapsible folders
+- File/folder icons
+- Nested structure support
+- Interactive navigation
+
+## Component Combinations
+
+You can combine components for rich documentation:
+
+<CodeBlock language="mdx">
+## Installation Guide
+
+<Callout type="info">
+  Make sure you have Node.js 18+ installed before proceeding.
+</Callout>
+
+Follow these steps to install:
+
+<FileTree data={[
+  {
+    name: "your-project/",
+    type: "folder",
+    children: [
+      { name: "package.json", type: "file" },
+      { name: "src/", type: "folder" }
+    ]
+  }
+]} />
+
+```bash
+npm install docuwhat
+npm run dev
+```
+
+<VideoPlayer src="/videos/installation.mp4" title="Installation Walkthrough" />
+</CodeBlock>
+
+## Standard Markdown Elements
+
+Remember, all standard Markdown still works:
+
+### Tables
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| MDX Support | Write components in Markdown | ✅ Ready |
+| Search | Full-text search with CMD+K | ✅ Ready |
+| Dark Mode | Toggle light/dark theme | ✅ Ready |
+| i18n | Multi-language support | 🚧 Coming |
+
+### Lists
+
+**Unordered:**
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+- Third item
+
+**Ordered:**
+1. First step
+2. Second step
+   1. Sub-step A
+   2. Sub-step B
+3. Final step
+
+### Links and Images
+
+- [External Link](https://example.com)
+- [Internal Link](/documentation/creating-content)
+- ![Image Example](/images/placeholder.png)
+
+### Blockquotes
+
+> "Documentation is a love letter that you write to your future self."
+> 
+> — Damian Conway
+
+## Best Practices
+
+### 1. Component Selection
+
+Choose the right component for your content:
+
+- **Callout**: Important notes, warnings, tips
+- **CodeBlock**: Code examples, configuration files
+- **VideoPlayer**: Tutorials, demonstrations
+- **FileTree**: Project structure, file organization
+
+### 2. Accessibility
+
+- Always provide `title` for videos
+- Use descriptive text in callouts
+- Include alt text for images
+- Structure headings hierarchically
+
+### 3. Performance
+
+- Optimize video files (< 50MB recommended)
+- Use appropriate image formats (WebP, JPEG)
+- Lazy load heavy content when possible
+
+## Creating Custom Components
+
+Want to add your own components? Create them in `src/components/mdx/`:
+
+<CodeBlock language="jsx">
+// src/components/mdx/custom-component.tsx
+export function CustomComponent({ children, ...props }) {
+  return (
+    <div className="custom-style" {...props}>
+      {children}
+    </div>
+  );
+}
+</CodeBlock>
+
+Then add to `src/components/mdx/index.tsx`:
+
+<CodeBlock language="jsx">
+import { CustomComponent } from "./custom-component";
+
+export const MDXComponents = {
+  // ... existing components
+  CustomComponent,
+};
+</CodeBlock>
+
+Now use in any MDX file:
+
+<CodeBlock language="mdx">
+<CustomComponent>
+  Your custom content here!
+</CustomComponent>
+</CodeBlock>
+
+## Next Steps
+
+- [Content Organization](/documentation/organization) - Structure large documentation sets
+- [Styling and Theming](/documentation/customization) - Customize appearance
+- [Deployment Guide](/documentation/deployment) - Deploy to production
