@@ -99,6 +99,3 @@ Use these custom components in your MDX files:
 - **MDX** - Markdown with JSX
 - **Fuse.js** - Fuzzy search
 
-## License
-
-MIT
