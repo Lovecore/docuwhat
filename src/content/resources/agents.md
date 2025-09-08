@@ -8,7 +8,7 @@ updated: 2025-09-06
 
 ## Overview
 
-Claude Code sub-agents represent a paradigm shift in AI-assisted development, introduced in July 2025. These specialized AI assistants operate with isolated contexts, custom tools, and focused expertise, enabling unprecedented multi-agent orchestration for complex software development workflows. Unlike traditional single-context AI interactions, sub-agents allow parallel processing, specialized expertise, and context preservation across massive codebases.
+Claude Code sub-agents represent a paradigm shift in AI-assisted development. These specialized AI assistants operate with isolated contexts, custom tools, and focused expertise, enabling multi-agent orchestration for complex software development workflows. Unlike traditional single-context AI interactions, sub-agents allow parallel processing, specialized expertise, and context preservation across massive codebases.
 
 Sub-agents transform Claude Code from a powerful coding assistant into a complete development orchestration platform, where multiple specialized AIs collaborate seamlessly while maintaining their individual contexts and expertise domains.
 
@@ -20,7 +20,7 @@ Sub-agents operate as independent AI instances with:
 - **Isolated Context Windows**: Each agent maintains its own conversation history and working memory
 - **Custom System Prompts**: Tailored instructions defining agent behavior and expertise
 - **Configurable Tool Access**: Granular permissions for file operations, web access, and system commands
-- **Stateless Execution**: Each invocation is independent, ensuring predictable behavior
+- **Stateless Execution**: Each invocation is independent, providing a slightly more predictable behavior
 
 ### Invocation Patterns
 
@@ -520,10 +520,8 @@ thinking: ultra think
 
 Execute agent cascade for feature: $ARGUMENTS
 
-```bash
 # First, check current branch
 git status
-```
 
 Now orchestrate agents:
 1. gh-issue-analyst: Analyze related issues
@@ -579,11 +577,3 @@ Provide status updates between each agent invocation.
 - [Creating Custom Agents](https://docs.anthropic.com/en/docs/claude-code/sub-agents#creating-custom-subagents)
 - [Agent Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
 - [Anthropic Teams Usage](https://www.anthropic.com/news/how-anthropic-teams-use-claude-code)
-
-### Community Resources
-- [Awesome Claude Agents Repository](https://github.com/hesreallyhim/awesome-claude-code-agents)
-- [Production-Ready Agents Collection](https://github.com/wshobson/agents)
-- [Claude Sub-Agent Workflow System](https://github.com/zhsama/claude-sub-agent)
-- [QA Agents Collection](https://github.com/darcyegb/ClaudeCodeAgents)
-- [Security Review Automation](https://www.anthropic.com/news/automate-security-reviews-with-claude-code)
-- [Multi-Agent Development Guide](https://medianeth.dev/blog/claude-code-frameworks-subagents-2025)
