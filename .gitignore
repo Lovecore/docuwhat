@@ -44,3 +44,4 @@ public/videos/*
 public/images/*
 !public/images/.gitkeep
 
+.old

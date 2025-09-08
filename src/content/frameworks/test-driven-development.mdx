@@ -9,15 +9,11 @@ Test-Driven Development (TDD) has emerged as a "superpower" when working with AI
 
 ## Why TDD + AI = Superpower
 
-Kent Beck, the creator of TDD, describes Test-Driven Development as a "superpower" when working with AI agents. The combination addresses fundamental challenges in both domains:
+The creator of TDD, describes Test-Driven Development as a "superpower" when working with AI agents. The combination addresses fundamental challenges in both domains:
 
 - **AI's Challenge**: AI agents can introduce regressions and hallucinations
 - **TDD's Challenge**: Writing tests is time-consuming and repetitive
 - **The Synergy**: AI eliminates the manual labor of test writing while TDD provides guardrails for AI-generated code
-
-<Callout type="success" title="Kent Beck's Insight">
-  "Everything that makes TDD a slog for humans makes it the perfect workflow for an AI agent. AI thrives on clear, measurable goals, and a binary test is one of the clearest goals you can give it."
-</Callout>
 
 ## Core TDD Principles
 
@@ -107,7 +103,7 @@ Ensure all tests still pass after refactoring.
 ```markdown
 # .claude/commands/tdd-flow.md
 ---
-thinking: extended
+thinking: ultra think
 ---
 
 Execute comprehensive TDD workflow for: $ARGUMENTS
@@ -385,7 +381,7 @@ describe('API Contract', () => {
 ```markdown
 # .claude/commands/tdd-feature.md
 ---
-thinking: extended
+thinking: ultra think
 ---
 
 Implement feature using strict TDD: $ARGUMENTS
@@ -406,13 +402,264 @@ name: TDD Enforcement
 on: [push, pull_request]
 jobs:
   tdd-check:
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-xdist
+          pip install -r requirements.txt
       - name: Verify test-first approach
         run: |
           # Check commit history
           # Ensure tests committed before implementation
-      - name: Coverage requirements
-        run: npm test -- --coverage
+          git log --oneline --grep="test:" --grep="feat:" | head -20
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ \
+            --cov=src \
+            --cov-report=term-missing \
+            --cov-report=html \
+            --cov-fail-under=80 \
+            -n auto
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true
+```
+
+## Leveraging Pre-commit Hooks for TDD
+
+Pre-commit hooks enforce TDD practices automatically, ensuring tests are written and passing before code reaches the repository. This creates an unbreakable safety net for sustainable development.
+
+### Setting Up Pre-commit for TDD
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: test-existence
+        name: Verify tests exist for new code
+        entry: scripts/check-test-coverage.py
+        language: python
+        files: '^src/.*\.py$'
+        
+      - id: test-first
+        name: Ensure tests committed before implementation
+        entry: scripts/verify-tdd-compliance.sh
+        language: script
+        stages: [commit]
+        
+      - id: run-tests
+        name: Run unit tests
+        entry: pytest
+        language: system
+        args: ['-xvs', '--tb=short']
+        pass_filenames: false
+        stages: [commit]
+        
+      - id: coverage-check
+        name: Check test coverage
+        entry: pytest
+        language: system
+        args: ['--cov=src', '--cov-fail-under=80', '--cov-report=term']
+        pass_filenames: false
+        stages: [push]
+        
+  - repo: https://github.com/psf/black
+    rev: 23.12.0
+    hooks:
+      - id: black
+        args: ['--check']
+        
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.1.9
+    hooks:
+      - id: ruff
+        args: ['--fix', '--exit-non-zero-on-fix']
+```
+
+### TDD Compliance Script
+
+```bash
+#!/bin/bash
+# scripts/verify-tdd-compliance.sh
+
+# Check if tests are modified/added before implementation
+TEST_FILES=$(git diff --cached --name-only | grep -E "test_.*\.py$")
+IMPL_FILES=$(git diff --cached --name-only | grep -E "^src/.*\.py$" | grep -v test)
+
+if [ -n "$IMPL_FILES" ] && [ -z "$TEST_FILES" ]; then
+    echo "❌ TDD Violation: Implementation files modified without tests"
+    echo "Modified implementation files:"
+    echo "$IMPL_FILES"
+    echo ""
+    echo "Please add or modify tests first following TDD practices."
+    exit 1
+fi
+
+echo "✅ TDD compliance check passed"
+```
+
+### Test Coverage Verification
+
+```python
+#!/usr/bin/env python3
+# scripts/check-test-coverage.py
+
+import sys
+import subprocess
+from pathlib import Path
+
+def check_test_exists(filepath):
+    """Verify test file exists for implementation file."""
+    src_file = Path(filepath)
+    
+    # Determine test file path
+    test_name = f"test_{src_file.stem}.py"
+    test_dir = Path("tests") / src_file.parent.relative_to("src")
+    test_file = test_dir / test_name
+    
+    if not test_file.exists():
+        print(f"❌ No test file found for {filepath}")
+        print(f"   Expected: {test_file}")
+        return False
+    
+    # Check if test file has actual tests
+    with open(test_file) as f:
+        content = f.read()
+        if "def test_" not in content:
+            print(f"⚠️  Test file {test_file} has no test functions")
+            return False
+    
+    return True
+
+def main():
+    # Get staged Python files
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--name-only"],
+        capture_output=True,
+        text=True
+    )
+    
+    files = result.stdout.strip().split("\n")
+    impl_files = [f for f in files if f.startswith("src/") and f.endswith(".py")]
+    
+    if not impl_files:
+        return 0
+    
+    all_have_tests = True
+    for filepath in impl_files:
+        if not check_test_exists(filepath):
+            all_have_tests = False
+    
+    if not all_have_tests:
+        print("\n💡 Use Claude Code to generate tests:")
+        print('   "Use qa-agent to create comprehensive tests for these files"')
+        return 1
+    
+    print("✅ All implementation files have corresponding tests")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+### Installing Pre-commit
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install the git hooks
+pre-commit install
+pre-commit install --hook-type commit-msg
+pre-commit install --hook-type pre-push
+
+# Run against all files (initial setup)
+pre-commit run --all-files
+```
+
+### Claude Code Integration
+
+```markdown
+# .claude/commands/setup-tdd-hooks.md
+---
+thinking: ultra think
+---
+
+Set up comprehensive TDD pre-commit hooks:
+
+1. Install pre-commit framework
+2. Configure .pre-commit-config.yaml with TDD checks
+3. Create verification scripts
+4. Test hook functionality
+5. Document hook bypass procedures for emergencies
+
+Research proper pre-commit methods based on {date or year}
+```
+
+### Benefits of Pre-commit TDD Enforcement
+
+1. **Automatic Compliance**: No manual checking required
+2. **Fast Feedback**: Issues caught before commit, not in CI
+3. **Team Consistency**: Everyone follows same TDD practices
+4. **Reduced CI Load**: Tests run locally first
+5. **Educational**: Teaches TDD through enforcement
+
+### Emergency Bypass
+
+For rare cases where hooks must be bypassed:
+
+```bash
+# Skip specific hooks
+SKIP=test-first,coverage-check git commit -m "emergency: hotfix"
+
+# Skip all hooks (use sparingly!)
+git commit --no-verify -m "emergency: critical fix"
+
+# Document why bypass was necessary
+echo "Bypassed TDD hooks for emergency fix #123" >> .bypass-log
+```
+
+### Advanced Hook Patterns
+
+#### Mutation Testing Hook
+
+```yaml
+- id: mutation-testing
+  name: Run mutation tests
+  entry: mutmut run --paths-to-mutate=src/
+  language: system
+  stages: [push]
+  pass_filenames: false
+```
+
+#### Performance Testing Hook
+
+```yaml
+- id: performance-tests
+  name: Check performance regression
+  entry: pytest tests/performance/ --benchmark-only
+  language: system
+  stages: [push]
+```
+
+#### Security Testing Hook
+
+```yaml
+- id: security-scan
+  name: Security vulnerability check
+  entry: bandit -r src/
+  language: system
+  files: '\.py$'
 ```
 
 ## Future of TDD with AI
@@ -426,7 +673,7 @@ jobs:
 
 ### The Path Forward
 
-As Kent Beck notes, TDD with AI agents represents a fundamental shift in how we approach software development. The combination creates a sustainable, reliable development process that:
+TDD with AI agents represents a fundamental shift in how we approach software development. The combination creates a sustainable, reliable development process that:
 
 - Maintains human control over design decisions
 - Leverages AI's speed for repetitive tasks
@@ -447,8 +694,3 @@ As Kent Beck notes, TDD with AI agents represents a fundamental shift in how we 
 - [TDD by Example - Kent Beck](https://www.amazon.com/Test-Driven-Development-Kent-Beck/dp/0321146530)
 - [TDD with AI Agents - Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/tdd-ai-agents-and-coding-with-kent)
 - [Claude Code TDD Guide](https://talent500.com/blog/claude-code-test-driven-development-guide/)
-
-### Community Resources
-- [TDD with Claude Code and MCP](https://medium.com/@taitcraigd/tdd-with-claude-code-model-context-protocol)
-- [AI-Powered TDD Techniques](https://www.geeky-gadgets.com/ai-powered-software-development/)
-- [Test-Driven AI Development](https://www.builder.io/blog/test-driven-development-ai)
