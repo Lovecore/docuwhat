@@ -38,3 +38,9 @@ next-env.d.ts
 .serena
 .claude
 
+# Keep public directories but ignore their contents except for .gitkeep files
+public/videos/*
+!public/videos/.gitkeep
+public/images/*
+!public/images/.gitkeep
+

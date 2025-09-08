@@ -1,0 +1,454 @@
+---
+title: Test-Driven Development with AI
+description: Sustainable, reliable AI coding through Test-Driven Development
+tags: ["tdd", "testing", "ai-development", "best-practices", "claude-code"]
+order: 2
+---
+
+Test-Driven Development (TDD) has emerged as a "superpower" when working with AI coding assistants, transforming the traditional red-green-refactor cycle into a highly efficient, sustainable development practice that ensures code reliability while leveraging AI's rapid iteration capabilities.
+
+## Why TDD + AI = Superpower
+
+Kent Beck, the creator of TDD, describes Test-Driven Development as a "superpower" when working with AI agents. The combination addresses fundamental challenges in both domains:
+
+- **AI's Challenge**: AI agents can introduce regressions and hallucinations
+- **TDD's Challenge**: Writing tests is time-consuming and repetitive
+- **The Synergy**: AI eliminates the manual labor of test writing while TDD provides guardrails for AI-generated code
+
+<Callout type="success" title="Kent Beck's Insight">
+  "Everything that makes TDD a slog for humans makes it the perfect workflow for an AI agent. AI thrives on clear, measurable goals, and a binary test is one of the clearest goals you can give it."
+</Callout>
+
+## Core TDD Principles
+
+### The Red-Green-Refactor Cycle
+
+![TDD Red-Green-Refactor Cycle](/images/tdd/flow.png)
+
+1. **Red**: Write a test that fails
+2. **Green**: Write the minimum code to pass the test
+3. **Refactor**: Improve code quality without changing behavior
+
+### TDD Rules
+
+1. Only write production code to make a failing test pass
+2. Write the minimum code necessary to pass tests
+3. Refactor only when tests are green
+4. Never modify tests to make them pass
+
+## AI-Assisted TDD Workflow
+
+### Step 1: Define Test Requirements
+
+```markdown
+# Claude Code Prompt
+I want to implement a user authentication system using TDD.
+Start by writing comprehensive tests for:
+- User registration with email validation
+- Password strength requirements (min 8 chars, 1 uppercase, 1 number)
+- Login with correct/incorrect credentials
+- Session management
+
+Do NOT write any implementation code yet - only tests.
+```
+
+### Step 2: Verify Test Failure
+
+```bash
+# Run tests and confirm they fail
+npm test
+
+# Claude Code instruction
+Run the tests and confirm they all fail as expected.
+Do not create any mock implementations.
+```
+
+### Step 3: Implement Code
+
+```markdown
+# Claude Code Prompt
+Now implement the minimal code to make all tests pass.
+Do not modify the tests.
+Focus on making each test pass one at a time.
+```
+
+### Step 4: Iterate and Refine
+
+```javascript
+// Example iteration with Claude Code
+describe('UserAuthentication', () => {
+  test('should validate email format', () => {
+    expect(validateEmail('user@example.com')).toBe(true);
+    expect(validateEmail('invalid-email')).toBe(false);
+  });
+
+  test('should enforce password requirements', () => {
+    expect(validatePassword('weak')).toBe(false);
+    expect(validatePassword('Strong123')).toBe(true);
+  });
+});
+```
+
+### Step 5: Refactor with Confidence
+
+```markdown
+# Claude Code Prompt
+Now that all tests pass, refactor the implementation to:
+- Improve code organization
+- Extract reusable functions
+- Add better error handling
+Ensure all tests still pass after refactoring.
+```
+
+## Advanced TDD Patterns with Claude Code
+
+### Multi-Agent TDD Workflow
+
+```markdown
+# .claude/commands/tdd-flow.md
+---
+thinking: extended
+---
+
+Execute comprehensive TDD workflow for: $ARGUMENTS
+
+1. qa-agent: Generate comprehensive test suite
+2. Verify all tests fail appropriately
+3. Developer: Implement minimal passing code
+4. refactor-agent: Optimize implementation
+5. qa-agent: Add edge case tests
+6. security-audit-agent: Review for vulnerabilities
+7. Confirm 100% test coverage
+```
+
+### Parallel Test Development
+
+```javascript
+// Use Claude Code to generate tests for multiple components simultaneously
+const testTargets = [
+  { component: 'AuthService', coverage: 95 },
+  { component: 'UserRepository', coverage: 90 },
+  { component: 'SessionManager', coverage: 100 }
+];
+
+// Claude generates comprehensive tests for each target in parallel
+```
+
+### Test-First API Development
+
+```yaml
+# OpenAPI Spec First
+openapi: 3.0.0
+paths:
+  /users:
+    post:
+      summary: Create user
+      responses:
+        201:
+          description: User created
+        400:
+          description: Validation error
+```
+
+```markdown
+# Claude Code Prompt
+Based on this OpenAPI spec, generate:
+1. Integration tests for all endpoints
+2. Unit tests for request validation
+3. Error handling tests
+Run tests to confirm they fail, then implement the API.
+```
+
+## Real-World Success Stories
+
+### Anthropic's Security Engineering Team
+
+**Before TDD + Claude Code:**
+- Design doc → janky code → refactor → give up on tests
+
+**After TDD + Claude Code:**
+- Ask Claude for pseudocode
+- Guide through test-driven development
+- Check in periodically
+- Result: More reliable, testable code
+
+### Cross-Language Testing
+
+The Inference team uses Claude Code to:
+- Write tests in unfamiliar languages (e.g., Rust)
+- Translate test logic between languages
+- Maintain consistent test coverage across polyglot codebases
+
+### Automated PR Reviews
+
+```yaml
+# GitHub Action with Claude Code
+name: TDD Review
+on: [pull_request]
+jobs:
+  test-coverage:
+    steps:
+      - name: Check test coverage
+        run: |
+          # Claude Code analyzes PR
+          # Ensures tests exist for new code
+          # Validates TDD compliance
+```
+
+## Best Practices
+
+### 1. Be Explicit About TDD
+
+```markdown
+# Good Prompt
+"We're doing TDD. Write tests first, no implementation.
+Focus on behavior, not implementation details."
+
+# Bad Prompt
+"Write code with tests"
+```
+
+### 2. Separate Test and Implementation Commits
+
+```bash
+# Commit tests first
+git add tests/
+git commit -m "test: Add authentication tests"
+
+# Then commit implementation
+git add src/
+git commit -m "feat: Implement authentication"
+```
+
+### 3. Use Independent Verification
+
+```markdown
+# Use different agents to verify
+1. qa-agent writes tests
+2. Developer implements code
+3. security-audit-agent validates both
+4. refactor-agent optimizes without breaking tests
+```
+
+### 4. Maintain Test Independence
+
+```javascript
+// Each test should be isolated
+beforeEach(() => {
+  // Fresh setup for each test
+  database.clear();
+  cache.flush();
+});
+
+afterEach(() => {
+  // Clean up after each test
+  jest.clearAllMocks();
+});
+```
+
+### 5. Focus on Behavior, Not Implementation
+
+```javascript
+// Good: Test behavior
+test('should authenticate valid user', async () => {
+  const result = await auth.login('user@example.com', 'password');
+  expect(result.success).toBe(true);
+  expect(result.token).toBeDefined();
+});
+
+// Bad: Test implementation details
+test('should call bcrypt.compare', () => {
+  // Don't test internal implementation
+});
+```
+
+## Common Pitfalls and Solutions
+
+### Problem: AI Modifies Tests to Pass
+
+**Solution**: Be explicit in prompts
+```markdown
+"IMPORTANT: Do not modify any existing tests.
+If tests fail, fix the implementation, not the tests."
+```
+
+### Problem: Over-complicated Test Scenarios
+
+**Solution**: Start simple, iterate
+```javascript
+// Start with basic cases
+test('adds two numbers', () => {
+  expect(add(2, 3)).toBe(5);
+});
+
+// Then add edge cases
+test('handles negative numbers', () => {
+  expect(add(-2, 3)).toBe(1);
+});
+```
+
+### Problem: Slow Test Execution
+
+**Solution**: Optimize test structure
+```javascript
+// Use test.each for parametric tests
+test.each([
+  [2, 3, 5],
+  [-2, 3, 1],
+  [0, 0, 0]
+])('add(%i, %i) returns %i', (a, b, expected) => {
+  expect(add(a, b)).toBe(expected);
+});
+```
+
+## Measuring TDD Success
+
+### Key Metrics
+
+1. **Test Coverage**: Aim for >80% code coverage
+2. **Test Execution Time**: Keep under 5 minutes for unit tests
+3. **Defect Rate**: Track bugs found in production
+4. **Development Velocity**: Measure feature delivery speed
+5. **Code Churn**: Monitor how often code changes
+
+### Coverage Report Integration
+
+```javascript
+// jest.config.js
+module.exports = {
+  collectCoverage: true,
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80
+    }
+  }
+};
+```
+
+## Advanced Techniques
+
+### Property-Based Testing
+
+```javascript
+// Use Claude Code to generate property-based tests
+import fc from 'fast-check';
+
+test('addition is commutative', () => {
+  fc.assert(
+    fc.property(fc.integer(), fc.integer(), (a, b) => {
+      return add(a, b) === add(b, a);
+    })
+  );
+});
+```
+
+### Mutation Testing
+
+```markdown
+# Claude Code Prompt
+Generate mutation tests to verify test suite quality.
+Introduce small bugs and ensure tests catch them.
+```
+
+### Contract Testing
+
+```javascript
+// Consumer-driven contract tests
+describe('API Contract', () => {
+  test('matches expected schema', async () => {
+    const response = await api.getUser(123);
+    expect(response).toMatchSchema(userSchema);
+  });
+});
+```
+
+## Integration with Claude Code Features
+
+### CLAUDE.md Configuration
+
+```markdown
+# CLAUDE.md
+## Project Testing Standards
+
+- Always use TDD for new features
+- Minimum 80% test coverage required
+- Run tests before committing
+- Use qa-agent for test generation
+- Tests must be independent and idempotent
+```
+
+### Custom TDD Commands
+
+```markdown
+# .claude/commands/tdd-feature.md
+---
+thinking: extended
+---
+
+Implement feature using strict TDD: $ARGUMENTS
+
+1. Write failing tests for all requirements
+2. Verify tests fail with clear messages
+3. Implement minimal passing code
+4. Refactor for clarity and performance
+5. Add edge case tests
+6. Achieve 100% coverage
+```
+
+### Continuous TDD Workflow
+
+```yaml
+# .github/workflows/tdd.yml
+name: TDD Enforcement
+on: [push, pull_request]
+jobs:
+  tdd-check:
+    steps:
+      - name: Verify test-first approach
+        run: |
+          # Check commit history
+          # Ensure tests committed before implementation
+      - name: Coverage requirements
+        run: npm test -- --coverage
+```
+
+## Future of TDD with AI
+
+### Emerging Patterns
+
+1. **Self-healing tests**: AI automatically updates tests for non-breaking changes
+2. **Predictive test generation**: AI suggests tests based on code patterns
+3. **Cross-project learning**: AI applies testing patterns from successful projects
+4. **Real-time TDD coaching**: AI provides immediate feedback on TDD practices
+
+### The Path Forward
+
+As Kent Beck notes, TDD with AI agents represents a fundamental shift in how we approach software development. The combination creates a sustainable, reliable development process that:
+
+- Maintains human control over design decisions
+- Leverages AI's speed for repetitive tasks
+- Ensures code quality through systematic testing
+- Accelerates delivery without sacrificing reliability
+
+<Callout type="info" title="Remember">
+  TDD is not about testing—it's about design. AI amplifies this by rapidly exploring design possibilities while tests ensure correctness.
+</Callout>
+
+## Resources
+
+### Official Documentation
+- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [How Anthropic Teams Use Claude Code](https://www.anthropic.com/news/how-anthropic-teams-use-claude-code)
+
+### Learning Resources
+- [TDD by Example - Kent Beck](https://www.amazon.com/Test-Driven-Development-Kent-Beck/dp/0321146530)
+- [TDD with AI Agents - Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/tdd-ai-agents-and-coding-with-kent)
+- [Claude Code TDD Guide](https://talent500.com/blog/claude-code-test-driven-development-guide/)
+
+### Community Resources
+- [TDD with Claude Code and MCP](https://medium.com/@taitcraigd/tdd-with-claude-code-model-context-protocol)
+- [AI-Powered TDD Techniques](https://www.geeky-gadgets.com/ai-powered-software-development/)
+- [Test-Driven AI Development](https://www.builder.io/blog/test-driven-development-ai)
